@@ -1,6 +1,6 @@
-package com.mech.view.przeszkody;
+package com.mech.game.view.przeszkody;
 
-import com.mech.view.Board;
+import com.mech.game.view.Board;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -10,24 +10,20 @@ public class Spawner {
     private static int x = Board.FIELD_X,y = Board.FIELD_Y;
 
     private static final Timer timer = new Timer(5000, e -> spawn(SpawnType.OBSTACLE));
+    private static final Timer timer2 = new Timer(15000, e -> spawn(SpawnType.FOOD));
     public static ArrayList<Obstacle> przeszkody = new ArrayList<>();
-    public static Food food;
+    public static ArrayList<Food> foods = new ArrayList<>();
+
 
     public static void spawn(SpawnType type){
         switch (type){
             case OBSTACLE: przeszkody.add(new Obstacle(new Random().nextInt(Board.FIELD_X),new Random().nextInt(Board.FIELD_Y)));
                 break;
-            case FOOD: { boolean b = true;
-                Food f = null;
-                while (b) {
-                f = new Food(new Random().nextInt(x - 1), new Random().nextInt(y - 1));
-                if (przeszkody.isEmpty()){food = f;return;}
-                for (Obstacle o : przeszkody) {
-                    b = o.getLocation().equals(f.getLocation());
-                    if(b) break;
+            case FOOD: {
+                foods.clear();
+                for (int i = 0; i < 10; i++) {
+                    foods.add(new Food(new Random().nextInt(Board.FIELD_X),new Random().nextInt(Board.FIELD_Y)));
                 }
-            }
-            food = f;
                 break;
             }
         }
@@ -36,10 +32,12 @@ public class Spawner {
 
     public static void start() {
         timer.start();
+        timer2.start();
     }
 
     public static void stop() {
         timer.stop();
+        timer2.stop();
     }
     static {
         spawn(SpawnType.FOOD);

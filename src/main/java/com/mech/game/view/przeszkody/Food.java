@@ -1,9 +1,10 @@
-package com.mech.view.przeszkody;
+package com.mech.game.view.przeszkody;
 
-import com.mech.view.Board;
-import com.mech.view.Drawing;
+import com.mech.game.view.Board;
+import com.mech.game.view.Drawing;
 
 import java.awt.*;
+import javax.swing.Timer;
 
 public class Food extends Point implements Drawing {
     public Food() {
@@ -19,7 +20,7 @@ public class Food extends Point implements Drawing {
 
     @Override
     public void draw(Graphics g) {
-        g.setColor(Color.GREEN);
+        g.setColor(Color.YELLOW);
         g.fillOval(x * Board.SIZE,y * Board.SIZE,Board.SIZE,Board.SIZE);
 
 

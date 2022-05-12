@@ -1,34 +1,48 @@
 package com.mech.server;
 
-import com.mech.user.User;
-import com.sun.jmx.remote.internal.ArrayQueue;
 import lombok.SneakyThrows;
 
-import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-public class Server extends Thread{
-    ServerSocket serverSocket;
-    ExecutorService executorService;
-    int port;
+public class Server implements Runnable{
+
+    private int port;
+    public static int ids;
+    private ServerSocket serverSocket;
+    private boolean running = false;
+
+    @SneakyThrows
+    public Server(int port) {
+        this.port = port;
+
+        serverSocket = new ServerSocket(port);
+    }
+
+    public void start(){
+        new Thread(this).start();
+    }
 
     @SneakyThrows
     @Override
     public void run() {
-        while(true) {
+        running = true;
+
+        while (running){
             Socket socket = serverSocket.accept();
-            User user = new User(socket);
-            executorService.submit(user);
+            initSocket(socket);
         }
+        shutdown();
     }
 
-    public Server() throws IOException {
-        port = 6500;
-        serverSocket = new ServerSocket(port,100);
-        executorService = Executors.newFixedThreadPool(50);
-        start();
+    private void initSocket(Socket socket){
+        Connection connection = new Connection(socket);
+        new Thread(connection).start();
+
+    }
+    @SneakyThrows
+    public void shutdown(){
+        running = false;
+        serverSocket.close();
     }
 }

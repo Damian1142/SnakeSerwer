@@ -1,4 +1,4 @@
-package com.mech.view;
+package com.mech.game.view;
 
 import java.awt.*;
 

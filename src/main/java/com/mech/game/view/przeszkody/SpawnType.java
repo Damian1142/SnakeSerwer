@@ -1,4 +1,4 @@
-package com.mech.view.przeszkody;
+package com.mech.game.view.przeszkody;
 
 public enum SpawnType {
     OBSTACLE,FOOD

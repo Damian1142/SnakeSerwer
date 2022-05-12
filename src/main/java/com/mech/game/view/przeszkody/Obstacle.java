@@ -1,7 +1,7 @@
-package com.mech.view.przeszkody;
+package com.mech.game.view.przeszkody;
 
-import com.mech.view.Board;
-import com.mech.view.Drawing;
+import com.mech.game.view.Board;
+import com.mech.game.view.Drawing;
 
 import java.awt.*;
 

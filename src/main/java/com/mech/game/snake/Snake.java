@@ -1,18 +1,18 @@
-package com.mech.game;
+package com.mech.game.snake;
 
-import com.mech.view.*;
-import com.mech.view.przeszkody.Obstacle;
-import com.mech.view.przeszkody.Spawner;
+import com.mech.game.view.Board;
+import com.mech.game.view.Direction;
+import com.mech.game.view.Drawing;
+import com.mech.game.view.przeszkody.Food;
+import com.mech.game.view.przeszkody.Obstacle;
+import com.mech.game.view.przeszkody.Spawner;
 import lombok.Getter;
-import lombok.Setter;
-
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Setter
 public class Snake implements Drawing {
 
     public Direction getSnakeDirection() {
@@ -22,23 +22,13 @@ public class Snake implements Drawing {
     public void setSnakeDirection(Direction snakeDirection) {
         this.snakeDirection = snakeDirection;
     }
-    private Color color;
-    private int ID;
-    public Snake(Color c) {
-        color = c;
+
+    public Snake() {
         body = new ArrayList<>();
         body.add(new Point(17,15));
         body.add(new Point(17,16));
         body.add(new Point(17,17));
-        //MainPanel.addDrawings(this);
-
         snakeDirection = Direction.UP;
-//        timer = new Timer(10000, e -> {
-//            body.add(new Point(0,0));
-//            wynik++;
-//            ViewController.score.setText("Wynik: " + wynik);
-//        });
-//        timer.start();
     }
     //private final Timer timer;
     private Direction snakeDirection;
@@ -61,7 +51,7 @@ public class Snake implements Drawing {
 
     @Override
     public void draw(Graphics g) {
-        g.setColor(color);
+        g.setColor(Color.BLUE);
         for (Point p: body.subList(1,body.size())){
             g.fillRect(p.x * Board.SIZE,p.y * Board.SIZE,Board.SIZE,Board.SIZE);
         }
@@ -71,10 +61,9 @@ public class Snake implements Drawing {
 
     public boolean isCollision() {
         Point head = body.get(0);
-        //System.out.println(head.x + " x " + head.y);
-        if (head.x < 0 || head.x > Board.FIELD_X - 1 || head.y < 0 || head.y > Board.FIELD_Y - 1){
-            return true;
-        }
+//        if (head.x < 0 || head.x > Board.FIELD_X || head.y < 0 || head.y > Board.FIELD_Y ){
+//            return true;
+//        }
         for (Obstacle p: Spawner.przeszkody){
             if (head.equals(p)){
                 return true;
@@ -93,10 +82,9 @@ public class Snake implements Drawing {
 
     public boolean eat() {
         Point head = body.get(0);
-        return Spawner.food.getLocation().equals(head);
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
+        for (Food f : Spawner.foods)
+            if (f.getLocation().equals(head))
+                return true;
+        return false;
     }
 }
